@@ -13,11 +13,23 @@ function prepareCanvas() {
     return context;
 }
 
+function getImageURL(w, h) {
+    return `https://source.unsplash.com/random/${w}x${h}`;
+}
 
+function imageUrls() {
+    let sizes = [[300, 200], [300, 300], [200, 500], [500, 500]];
+    var urls = [];
+    sizes.forEach(function(item, i, size) {
+        urls.push(getImageURL(item[0], item[1]));
+    });
+    return urls;
+}
 
 window.onload = () => {
     const ctx = prepareCanvas();
-
+    const imageURLs = imageUrls();
+    
 };
 
 /*
