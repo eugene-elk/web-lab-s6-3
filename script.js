@@ -9,7 +9,7 @@ function prepareCanvas() {
         "    display: block;";
     document.body.appendChild(canvas);
     var context = canvas.getContext('2d');
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    //context.fillRect(0, 0, canvas.width, canvas.height);
     return context;
 }
 
@@ -17,8 +17,8 @@ function getImageURL(w, h) {
     return `https://source.unsplash.com/random/${w}x${h}`;
 }
 
-function imageUrls() {
-    let sizes = [[300, 200], [300, 300], [200, 500], [500, 500]];
+function getImageURLs() {
+    let sizes = [[300, 200], [300, 300], [200, 500]];
     var urls = [];
     sizes.forEach(function(item, i, size) {
         urls.push(getImageURL(item[0], item[1]));
@@ -26,10 +26,21 @@ function imageUrls() {
     return urls;
 }
 
+function drawImage(ctx, x, y, src) {
+    var img = new Image();
+    img.src = 'https://source.unsplash.com/random/300x300';
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+        ctx.drawImage(img, x, y);
+    }
+}
+
+
 window.onload = () => {
-    const ctx = prepareCanvas();
-    const imageURLs = imageUrls();
-    
+    var ctx = prepareCanvas();
+    const imageURLs = getImageURLs();
+
+    drawImage(ctx, 0, 0);
 };
 
 /*
