@@ -1,5 +1,9 @@
 'use strict';
 
+var downloadedImages = [];
+var countOfDownloadedImages = 0;
+var quoteText = "";
+
 function prepareCanvas() {
     const canvas = document.createElement("canvas");
     canvas.height = 600;
@@ -18,7 +22,8 @@ function getImageURL(w, h) {
 }
 
 function getImageURLs() {
-    let sizes = [[300, 200], [300, 300], [200, 500]];
+    // let sizes = [[300, 300], [300, 300], [300, 300], [300, 300]];
+    let sizes = [[200, 200], [200, 400], [400, 200], [400, 400]];
     var urls = [];
     sizes.forEach(function(item, i, size) {
         urls.push(getImageURL(item[0], item[1]));
@@ -26,21 +31,46 @@ function getImageURLs() {
     return urls;
 }
 
-function drawImage(ctx, x, y, src) {
+function drawImage(ctx, src) {
     var img = new Image();
-    img.src = 'https://source.unsplash.com/random/300x300';
+    img.src = src;
     img.crossOrigin = 'anonymous';
+    downloadedImages.push(img);
     img.onload = function () {
-        ctx.drawImage(img, x, y);
+        countOfDownloadedImages++;
+        if (countOfDownloadedImages === 4) {
+            let places = [[0, 0],  [0, 200], [200, 0], [200, 200]];
+            places.forEach(function (item, i, place) {
+                ctx.drawImage(downloadedImages[i], item[0], item[1]);
+            });
+            console.log(quoteText);
+        }
     }
 }
 
+function drawAllImages(ctx, urls) {
+    for(var i = 0; i < 4; i++) {
+        drawImage(ctx, urls[i]);
+    }
+}
+
+function getQuote(response) {
+    quoteText = response.quoteText;
+}
+
+function drawQuote(ctx) {
+
+}
 
 window.onload = () => {
     var ctx = prepareCanvas();
     const imageURLs = getImageURLs();
 
-    drawImage(ctx, 0, 0);
+    drawAllImages(ctx, imageURLs);
+
+    drawQuote(ctx);
+
+    // drawAllImages(ctx, imageURLs);
 };
 
 /*
