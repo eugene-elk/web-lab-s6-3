@@ -3,6 +3,7 @@
 var downloadedImages = [];
 var countOfDownloadedImages = 0;
 var quoteText = "";
+const maxWidth = 400;
 
 function prepareCanvas() {
     const canvas = document.createElement("canvas");
@@ -31,6 +32,11 @@ function getImageURLs() {
     return urls;
 }
 
+function prepareBackground(ctx) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+    ctx.fillRect(0, 0, 600, 600);
+}
+
 function drawImage(ctx, src) {
     var img = new Image();
     img.src = src;
@@ -43,7 +49,8 @@ function drawImage(ctx, src) {
             places.forEach(function (item, i, place) {
                 ctx.drawImage(downloadedImages[i], item[0], item[1]);
             });
-            console.log(quoteText);
+            prepareBackground(ctx);
+            drawQuote(ctx);
         }
     }
 }
@@ -59,7 +66,35 @@ function getQuote(response) {
 }
 
 function drawQuote(ctx) {
+    ctx.font = '20px times new roman';
+    ctx.fillStyle = '#ffffff';
 
+    var lines = splitLines(ctx);
+    //ctx.fillText(quoteText,220,220);
+
+    for
+}
+
+function splitLines(ctx) {
+    var lines = [];
+    const words = quoteText.split(" ");
+
+    var currentLine = words[0];
+    for (let i = 1; i < words.length; i++) {
+        let word = words[i];
+        let width = ctx.measureText(currentLine + " " + word).width;
+        if (width < maxWidth) {
+            currentLine += " " + word;
+        } else {
+            lines.push(currentLine);
+            console.log(currentLine);
+            currentLine = word;
+        }
+    }
+    lines.push(currentLine);
+    console.log(currentLine);
+
+    return lines;
 }
 
 window.onload = () => {
@@ -67,8 +102,6 @@ window.onload = () => {
     const imageURLs = getImageURLs();
 
     drawAllImages(ctx, imageURLs);
-
-    drawQuote(ctx);
 
     // drawAllImages(ctx, imageURLs);
 };
