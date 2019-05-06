@@ -3,7 +3,7 @@
 var downloadedImages = [];
 var countOfDownloadedImages = 0;
 var quoteText = "";
-const maxWidth = 400;
+const maxWidth = 380;
 
 function prepareCanvas() {
     const canvas = document.createElement("canvas");
@@ -72,7 +72,13 @@ function drawQuote(ctx) {
     var lines = splitLines(ctx);
     //ctx.fillText(quoteText,220,220);
 
-    for
+    var posX = 205;
+    var posY = 220;
+
+    for(var i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], posX, posY);
+        posY += 20;
+    }
 }
 
 function splitLines(ctx) {
